@@ -53,6 +53,9 @@ class ApplicationListener implements Subscriber
 	 */
 	public function getSubscribedEvents()
 	{
+		if (php_sapi_name() == "cli") {
+			return [];
+		}
 		return [
 			Application::class . '::onPresenter' => "request",
 		];
@@ -63,7 +66,7 @@ class ApplicationListener implements Subscriber
 	 * @param Presenter $presenter
 	 * @throws \ReflectionException
 	 */
-	public function request(Application $application, Presenter $presenter)
+	public function request(Application $application, Presenter $presenter): void
 	{
 		$requests = $application->getRequests();
 
