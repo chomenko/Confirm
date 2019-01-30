@@ -1,0 +1,30 @@
+{
+  "name": "chomenko/confirm",
+  "type": "extensions",
+  "description": "",
+  "keywords": ["Modal", "Bootstrap", "Bootstrap 4", "Confirm"],
+  "homepage": "https://github.com/chomenko/Confirm",
+  "license": [],
+  "authors": [
+    {
+      "name": "Mykola Chomenko",
+      "homepage": "http://dipcom.cz",
+      "email": "mykola.chomenko@dipcom.cz"
+    }
+  ],
+  "support": {
+    "email": "mykola.chomenko@dipcom.cz"
+  },
+  "require": {
+    "php": ">=7",
+    "doctrine/annotations": "^1.6",
+    "kdyby/events": "^3.1",
+    "chomenko/extra-form": "dev-master",
+    "chomenko/modal": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "Chomenko\\Confirm\\": "src/"
+    }
+  }
+}
