@@ -4,7 +4,7 @@
  * Email: mykola.chomenko@dipcom.cz
  */
 
-namespace Chomenko\Confirm\Modals;
+namespace Chomenko\Confirm\Modal;
 
 interface IConfirmModal
 {

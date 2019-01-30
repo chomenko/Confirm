@@ -7,8 +7,8 @@
 namespace Chomenko\Confirm\DI;
 
 use Chomenko\Confirm\ApplicationListener;
-use Chomenko\Confirm\Modals\ConfirmModal;
-use Chomenko\Confirm\Modals\IConfirmModal;
+use Chomenko\Confirm\Modal\ConfirmModal;
+use Chomenko\Confirm\Modal\IConfirmModal;
 use Chomenko\Modal\DI\ModalExtension;
 use Kdyby\Events\DI\EventsExtension;
 use Nette\Configurator;

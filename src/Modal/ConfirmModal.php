@@ -4,7 +4,7 @@
  * Email: mykola.chomenko@dipcom.cz
  */
 
-namespace Chomenko\Confirm\Modals;
+namespace Chomenko\Confirm\Modal;
 
 use Chomenko\Confirm\Confirm;
 use Chomenko\Confirm\DI\ConfirmExtension;

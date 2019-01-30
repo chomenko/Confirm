@@ -7,14 +7,13 @@
 namespace Chomenko\Confirm;
 
 use Chomenko\Confirm\DI\ConfirmExtension;
-use Chomenko\Confirm\Modals\ConfirmModal;
-use Chomenko\Confirm\Modals\IConfirmModal;
+use Chomenko\Confirm\Modal\ConfirmModal;
+use Chomenko\Confirm\Modal\IConfirmModal;
 use Chomenko\Modal\ModalController;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Kdyby\Events\Subscriber;
 use Nette\Application\Application;
-use Nette\Application\IResponse;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
 use Nette\Localization\ITranslator;
