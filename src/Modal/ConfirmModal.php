@@ -13,6 +13,7 @@ use Chomenko\Modal\AccessAction;
 use Chomenko\Modal\ModalControl;
 use Chomenko\Modal\ModalHtml;
 use Chomenko\Modal\WrappedHtml;
+use Chomenko\Modal\WrappedModal;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
 use Nette\ComponentModel\Component;
@@ -102,8 +103,10 @@ class ConfirmModal extends ModalControl
 		$form->setTranslator($this->confirm->getTranslator());
 		$form->setTranslateFile($this->confirm->translateFile);
 		$form->addSubmit("yes", $this->confirm->yes)
+			->setAttribute('class', 'btn btn-default' . ($this->confirm->ajax ? ' ajax' : ''))
 			->onClick[] = [$this, "processAllow"];
 		$form->addSubmit("not", $this->confirm->not)
+			->setAttribute('class', 'btn btn-default'. ($this->confirm->ajax ? ' ajax' : ''))
 			->onClick[] = [$this, "processDenied"];
 
 		$request = $this->confirm->getRequest();
@@ -123,6 +126,7 @@ class ConfirmModal extends ModalControl
 	}
 
 	/**
+	 * @throws \Chomenko\Modal\Exceptions\ModalException
 	 * @throws \Nette\Application\AbortException
 	 */
 	public function processAllow()
@@ -133,10 +137,17 @@ class ConfirmModal extends ModalControl
 		$params = $request->getParameters();
 		$params[self::PARAMETER_KEY] = $this;
 		$request->setParameters($params);
+
+		$parent = $this->getParent();
+		if ($parent instanceof WrappedModal) {
+			$parent->getModalFactory()->getDriver()->closeModal();
+		}
+
 		$this->presenter->forward($request);
 	}
 
 	/**
+	 * @throws \Chomenko\Modal\Exceptions\ModalException
 	 * @throws \Nette\Application\AbortException
 	 */
 	public function processDenied()
@@ -147,6 +158,11 @@ class ConfirmModal extends ModalControl
 		}
 		if (!$this->presenter->isAjax()) {
 			$this->presenter->redirect($destination);
+		}
+
+		$parent = $this->getParent();
+		if ($parent instanceof WrappedModal) {
+			$parent->getModalFactory()->getDriver()->closeModal();
 		}
 	}
 

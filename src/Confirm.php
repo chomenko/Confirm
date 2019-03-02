@@ -55,6 +55,11 @@ class Confirm implements ConfirmAnnotation
 	/**
 	 * @var bool
 	 */
+	public $ajax = FALSE;
+
+	/**
+	 * @var bool
+	 */
 	public $translate = TRUE;
 
 	/**

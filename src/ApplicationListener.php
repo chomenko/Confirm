@@ -10,6 +10,7 @@ use Chomenko\Confirm\DI\ConfirmExtension;
 use Chomenko\Confirm\Modal\ConfirmModal;
 use Chomenko\Confirm\Modal\IConfirmModal;
 use Chomenko\Modal\ModalController;
+use Chomenko\Modal\WrappedModal;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Kdyby\Events\Subscriber;
@@ -74,6 +75,15 @@ class ApplicationListener implements Subscriber
 
 		$do = $request->getParameter("do");
 		$modal = $request->getParameter(ConfirmModal::PARAMETER_KEY);
+
+		if ($modal instanceof ConfirmModal) {
+			$presenter->onStartup[] = function () use ($modal){
+				$parent = $modal->getParent();
+				if ($parent instanceof WrappedModal) {
+					$parent->getModalFactory()->getDriver()->closeModal();
+				}
+			};
+		}
 
 		if ($do && !$modal instanceof ConfirmModal) {
 			$confirm = $this->getConfirm($do, $presenter);
