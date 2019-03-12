@@ -19,8 +19,8 @@
     "php": ">=7",
     "doctrine/annotations": "^1.6",
     "kdyby/events": "^3.1",
-    "chomenko/extra-form": "dev-master",
-    "chomenko/modal": "dev-master"
+    "chomenko/extra-form": "^1.0",
+    "chomenko/modal": "^1.0"
   },
   "autoload": {
     "psr-4": {
