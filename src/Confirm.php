@@ -103,6 +103,11 @@ class Confirm implements ConfirmAnnotation
 	private $presenter;
 
 	/**
+	 * @var bool
+	 */
+	private $skip = FALSE;
+
+	/**
 	 * @return Control
 	 */
 	public function getControl(): Control
@@ -204,6 +209,22 @@ class Confirm implements ConfirmAnnotation
 	{
 		$this->originalRequest = $originalRequest;
 		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isSkip(): bool
+	{
+		return $this->skip;
+	}
+
+	/**
+	 * @param bool $skip
+	 */
+	public function setSkip(bool $skip)
+	{
+		$this->skip = $skip;
 	}
 
 }
