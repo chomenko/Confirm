@@ -7,6 +7,7 @@
 namespace Chomenko\Confirm\DI;
 
 use Chomenko\Confirm\ApplicationListener;
+use Chomenko\Confirm\ConfirmSignals;
 use Chomenko\Confirm\Modal\ConfirmModal;
 use Chomenko\Confirm\Modal\IConfirmModal;
 use Chomenko\Modal\DI\ModalExtension;
@@ -33,6 +34,9 @@ class ConfirmExtension extends CompilerExtension
 			$class = $this->config["translator"];
 			$translator = $builder->getDefinitionByType($class);
 		}
+
+		$builder->addDefinition($this->prefix("signals"))
+			->setFactory(ConfirmSignals::class);
 
 		$builder->addDefinition($this->prefix("application.listener"))
 			->setFactory(ApplicationListener::class, ['translator' => $translator])

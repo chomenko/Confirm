@@ -38,15 +38,22 @@ class ApplicationListener implements Subscriber
 	protected $translator;
 
 	/**
+	 * @var ConfirmSignals
+	 */
+	private $confirmSignals;
+
+	/**
 	 * @param ModalController $controller
+	 * @param ConfirmSignals $confirmSignals
 	 * @param ITranslator|NULL $translator
 	 * @throws AnnotationException
 	 */
-	public function __construct(ModalController $controller, ITranslator $translator = NULL)
+	public function __construct(ModalController $controller, ConfirmSignals $confirmSignals, ITranslator $translator = NULL)
 	{
 		$this->modalController = $controller;
 		$this->annotReader = new AnnotationReader();
 		$this->translator = $translator;
+		$this->confirmSignals = $confirmSignals;
 	}
 
 	/**
@@ -65,7 +72,6 @@ class ApplicationListener implements Subscriber
 	/**
 	 * @param Application $application
 	 * @param Presenter $presenter
-	 * @throws \ReflectionException
 	 */
 	public function request(Application $application, Presenter $presenter): void
 	{
@@ -77,7 +83,7 @@ class ApplicationListener implements Subscriber
 		$modal = $request->getParameter(ConfirmModal::PARAMETER_KEY);
 
 		if ($modal instanceof ConfirmModal) {
-			$presenter->onStartup[] = function () use ($modal){
+			$presenter->onStartup[] = function () use ($modal) {
 				$parent = $modal->getParent();
 				if ($parent instanceof WrappedModal) {
 					$parent->getModalFactory()->getDriver()->closeModal();
@@ -90,6 +96,12 @@ class ApplicationListener implements Subscriber
 				$confirm = $this->getConfirm($do, $presenter);
 
 				if (!$confirm) {
+					return;
+				}
+
+				$this->confirmSignals->createConfirm($confirm);
+
+				if ($confirm->isSkip()) {
 					return;
 				}
 
@@ -110,6 +122,8 @@ class ApplicationListener implements Subscriber
 				if ($request->isMethod("post")) {
 					$nextRequest->setFlag("post", TRUE);
 				}
+
+				$this->confirmSignals->beforeForward($confirm, $nextRequest);
 				$presenter->forward($nextRequest);
 			};
 		}
