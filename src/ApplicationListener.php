@@ -86,31 +86,30 @@ class ApplicationListener implements Subscriber
 		}
 
 		if ($do && !$modal instanceof ConfirmModal) {
-			$confirm = $this->getConfirm($do, $presenter);
+			$presenter->onStartup[] = function () use ($modal, $do, $presenter, $request, $requests){
+				$confirm = $this->getConfirm($do, $presenter);
 
-			if (!$confirm) {
-				return;
-			}
+				if (!$confirm) {
+					return;
+				}
 
-			$modal = $this->modalController->getByInterface(IConfirmModal::class);
-			$modalUrl = $modal->getUrl();
-			$confirm->setOriginalRequest(reset($requests));
-			$confirm->setRequest($request);
-			$confirm->setPresenter($presenter);
+				$modal = $this->modalController->getByInterface(IConfirmModal::class);
+				$modalUrl = $modal->getUrl();
+				$confirm->setOriginalRequest(reset($requests));
+				$confirm->setRequest($request);
+				$confirm->setPresenter($presenter);
 
-			$parameters = $request->getParameters();
-			$parameters[ConfirmExtension::CONFIRM_PARAMETER_KEY] = $confirm;
-			$parameters = array_replace_recursive($parameters, $modalUrl->getQueryParameters());
+				$parameters = $request->getParameters();
+				$parameters[ConfirmExtension::CONFIRM_PARAMETER_KEY] = $confirm;
+				$parameters = array_replace_recursive($parameters, $modalUrl->getQueryParameters());
 
-			$nextRequest = clone $request;
-			$nextRequest->setMethod(Request::FORWARD);
-			$nextRequest->setParameters($parameters);
+				$nextRequest = clone $request;
+				$nextRequest->setMethod(Request::FORWARD);
+				$nextRequest->setParameters($parameters);
 
-			if ($request->isMethod("post")) {
-				$nextRequest->setFlag("post", TRUE);
-			}
-
-			$presenter->onStartup[] = function () use ($nextRequest, $presenter) {
+				if ($request->isMethod("post")) {
+					$nextRequest->setFlag("post", TRUE);
+				}
 				$presenter->forward($nextRequest);
 			};
 		}
