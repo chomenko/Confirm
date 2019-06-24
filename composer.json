@@ -20,7 +20,7 @@
     "doctrine/annotations": "^1.6",
     "kdyby/events": "^3.1",
     "chomenko/extra-form": "^1.0",
-    "chomenko/modal": "^1.0"
+    "chomenko/modal": "^2.0"
   },
   "autoload": {
     "psr-4": {
